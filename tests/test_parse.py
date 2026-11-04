@@ -19,6 +19,8 @@ TODAY = date(2026, 11, 4)  # Wednesday
         ("2025-12-01", date(2025, 12, 1)),
         ("2025/12/04", date(2025, 12, 4)),
         ("December 1st, 2025", date(2025, 12, 1)),
+        ("the day after tomorrow", date(2026, 11, 6)),
+        ("the day before yesterday", date(2026, 11, 2)),
         ("5 days before December 1st, 2025", date(2025, 11, 26)),
         ("two weeks from tomorrow", date(2026, 11, 19)),
         ("1 year and 2 months after yesterday", date(2028, 1, 3)),

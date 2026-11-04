@@ -44,6 +44,12 @@ TODAY = date(2026, 11, 4)  # Wednesday
         ("  2024/02/29 ", date(2024, 2, 29)),
         ("5 days before 2025/12/04", date(2025, 11, 29)),
         ("1 month after 2025/01/31", date(2025, 2, 28)),
+        # Day after tomorrow / day before yesterday
+        ("day after tomorrow", date(2026, 11, 6)),
+        ("day before yesterday", date(2026, 11, 2)),
+        ("  The   Day After  TOMORROW ", date(2026, 11, 6)),
+        ("two weeks from the day after tomorrow", date(2026, 11, 20)),
+        ("3 days before the day before yesterday", date(2026, 10, 30)),
         # Nested offsets
         ("2 days after 3 days before tomorrow", date(2026, 11, 4)),
         # Month clamping
@@ -93,6 +99,45 @@ def test_edge_cases(text: str, expected: date) -> None:
     ],
 )
 def test_more_invalid_input(text: str) -> None:
+    with pytest.raises(ValueError):
+        parse(text, today=TODAY)
+
+
+@pytest.mark.parametrize(
+    ("text", "today", "expected"),
+    [
+        # Month boundaries
+        ("the day after tomorrow", date(2026, 11, 29), date(2026, 12, 1)),
+        ("the day before yesterday", date(2026, 12, 1), date(2026, 11, 29)),
+        ("the day after tomorrow", date(2024, 2, 28), date(2024, 3, 1)),
+        ("the day after tomorrow", date(2025, 2, 27), date(2025, 3, 1)),
+        ("day before yesterday", date(2024, 3, 1), date(2024, 2, 28)),
+        # Year boundaries
+        ("the day after tomorrow", date(2026, 12, 30), date(2027, 1, 1)),
+        ("the day after tomorrow", date(2026, 12, 31), date(2027, 1, 2)),
+        ("the day before yesterday", date(2027, 1, 1), date(2026, 12, 30)),
+        ("day before yesterday", date(2027, 1, 2), date(2026, 12, 31)),
+        # As a reference date across a boundary
+        ("1 month after the day after tomorrow", date(2026, 1, 29), date(2026, 2, 28)),
+        ("2 days after the day before yesterday", date(2027, 1, 1), date(2027, 1, 1)),
+    ],
+)
+def test_day_after_tomorrow_boundaries(text: str, today: date, expected: date) -> None:
+    assert parse(text, today=today) == expected
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "the day after",
+        "the day before",
+        "the day after today",
+        "the day after next tuesday",
+        "the the day after tomorrow",
+        "day after",
+    ],
+)
+def test_day_after_tomorrow_invalid(text: str) -> None:
     with pytest.raises(ValueError):
         parse(text, today=TODAY)
 

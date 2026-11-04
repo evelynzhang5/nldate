@@ -9,6 +9,7 @@ The grammar, after normalizing case, whitespace and commas, is roughly::
     offsets := offset (("and" | ",") offset)*
     offset  := number unit
     base    := today | tomorrow | yesterday | now
+             | [the] day after tomorrow | [the] day before yesterday
              | ISO date | YYYY/M/D date | month-name date | (next | last) weekday
 """
 
@@ -110,7 +111,16 @@ _UNITS = {
     "year": (0, 12),
 }
 
-_RELATIVE_DAYS = {"today": 0, "now": 0, "tomorrow": 1, "yesterday": -1}
+_RELATIVE_DAYS = {
+    "today": 0,
+    "now": 0,
+    "tomorrow": 1,
+    "yesterday": -1,
+    "the day after tomorrow": 2,
+    "day after tomorrow": 2,
+    "the day before yesterday": -2,
+    "day before yesterday": -2,
+}
 
 _ORDINAL = r"(?P<day>\d{1,2})(?P<suffix>st|nd|rd|th)?"
 _YEAR = r"(?:,? (?P<year>\d{4}))?"

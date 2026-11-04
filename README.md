@@ -24,7 +24,7 @@ Input is case-insensitive, and extra whitespace is ignored.
 
 | Kind | Examples |
 | --- | --- |
-| Relative days | `today`, `now`, `tomorrow`, `yesterday` |
+| Relative days | `today`, `now`, `tomorrow`, `yesterday`, `the day after tomorrow`, `day before yesterday` |
 | ISO dates | `2025-12-01` |
 | Slashed dates (year/month/day) | `2025/12/04`, `2025/1/5` |
 | Month-name dates | `December 1st, 2025`, `Dec 1 2025`, `Sept. 22nd`, `the 3rd of March 2027`, `11th November 2026` |
@@ -32,7 +32,7 @@ Input is case-insensitive, and extra whitespace is ignored.
 | Offsets from today | `in 3 days`, `in a year`, `2 weeks ago` |
 | Offsets from a date | `5 days before December 1st, 2025`, `3 days after 2025-12-30`, `two weeks from tomorrow` |
 | Combined offsets | `1 year and 2 months after yesterday`, `1 year, 2 months and 3 days ago` |
-| Nested offsets | `2 days after 3 days before tomorrow` |
+| Nested offsets | `2 days after 3 days before tomorrow`, `two weeks from the day after tomorrow` |
 
 Units are `day`, `week`, `fortnight`, `month` and `year` (singular or plural).
 Amounts are digits, `a`/`an`, or written numbers from `zero` to `ninety-nine`
