@@ -9,7 +9,7 @@ The grammar, after normalizing case, whitespace and commas, is roughly::
     offsets := offset (("and" | ",") offset)*
     offset  := number unit
     base    := today | tomorrow | yesterday | now
-             | ISO date | month-name date | (next | last) weekday
+             | ISO date | YYYY/M/D date | month-name date | (next | last) weekday
 """
 
 import calendar
@@ -117,6 +117,7 @@ _YEAR = r"(?:,? (?P<year>\d{4}))?"
 _MONTH_FIRST = re.compile(rf"(?P<month>[a-z]+)\.? {_ORDINAL}{_YEAR}")
 _DAY_FIRST = re.compile(rf"(?:the )?{_ORDINAL} (?:of )?(?P<month>[a-z]+)\.?{_YEAR}")
 _ISO = re.compile(r"(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})")
+_SLASHED = re.compile(r"(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<day>\d{1,2})")
 _WEEKDAY = re.compile(r"(?P<direction>next|last) (?P<weekday>[a-z]+)")
 _RELATION = re.compile(r" (before|after|from) ")
 _OFFSET_SEPARATOR = re.compile(r", and |, | and ")
@@ -228,7 +229,7 @@ def _parse_base(text: str, today: date) -> date:
     if text in _RELATIVE_DAYS:
         return today + timedelta(days=_RELATIVE_DAYS[text])
 
-    if match := _ISO.fullmatch(text):
+    if match := _ISO.fullmatch(text) or _SLASHED.fullmatch(text):
         return date(int(match["year"]), int(match["month"]), int(match["day"]))
 
     for pattern in (_MONTH_FIRST, _DAY_FIRST):

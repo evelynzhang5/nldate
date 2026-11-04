@@ -39,6 +39,11 @@ TODAY = date(2026, 11, 4)  # Wednesday
         ("thirty one days before today", date(2026, 10, 4)),
         ("a fortnight after next Monday", date(2026, 11, 23)),
         ("3 days after 2025-12-30", date(2026, 1, 2)),
+        # Slashed year/month/day dates
+        ("2025/1/5", date(2025, 1, 5)),
+        ("  2024/02/29 ", date(2024, 2, 29)),
+        ("5 days before 2025/12/04", date(2025, 11, 29)),
+        ("1 month after 2025/01/31", date(2025, 2, 28)),
         # Nested offsets
         ("2 days after 3 days before tomorrow", date(2026, 11, 4)),
         # Month clamping
@@ -69,6 +74,15 @@ def test_edge_cases(text: str, expected: date) -> None:
         "before tomorrow",
         "2025-13-01",
         "2025-1-1",
+        "2025/02/30",
+        "2025/13/01",
+        "2025/00/10",
+        "2025/12/0",
+        "2025/12-04",
+        "2025//12/04",
+        "12/04/2025",
+        "2025/123/4",
+        "3 days after 2025/02/29",
         "February 30th, 2025",
         "December 2st, 2025",
         "Smarch 3rd, 2025",

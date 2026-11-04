@@ -26,6 +26,7 @@ Input is case-insensitive, and extra whitespace is ignored.
 | --- | --- |
 | Relative days | `today`, `now`, `tomorrow`, `yesterday` |
 | ISO dates | `2025-12-01` |
+| Slashed dates (year/month/day) | `2025/12/04`, `2025/1/5` |
 | Month-name dates | `December 1st, 2025`, `Dec 1 2025`, `Sept. 22nd`, `the 3rd of March 2027`, `11th November 2026` |
 | Weekdays | `next Tuesday`, `last fri` |
 | Offsets from today | `in 3 days`, `in a year`, `2 weeks ago` |
@@ -51,6 +52,10 @@ Amounts are digits, `a`/`an`, or written numbers from `zero` to `ninety-nine`
   Wednesday is 7 days later, not today; `last Wednesday` is 7 days earlier.
   `next Thursday` on a Wednesday is the following day. A bare weekday such as
   `Tuesday` is ambiguous and raises `ValueError`.
+- **Slashed dates are always year/month/day.** `2025/12/04` is December 4th.
+  Month and day may be one or two digits. Day-first or month-first forms
+  such as `12/04/2025` are ambiguous and raise `ValueError`. Dashed ISO dates
+  still require two-digit months and days (`2025-01-05`).
 - **Month-name dates without a year** use the year of `today`, even if that
   date has already passed.
 - **Validation is strict.** Impossible dates (`February 30th`), wrong ordinal
